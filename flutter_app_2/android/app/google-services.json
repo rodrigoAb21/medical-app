@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "1088986692934",
+    "firebase_url": "https://medi-app-12798.firebaseio.com",
+    "project_id": "medi-app-12798",
+    "storage_bucket": "medi-app-12798.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1088986692934:android:ef938c002e08bcc3387947",
+        "android_client_info": {
+          "package_name": "sw.uagrm.flutter_app_2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1088986692934-vvvj1md55tm6ukj7cnmc69qhambpnn8r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "sw.uagrm.flutter_app_2",
+            "certificate_hash": "c10e9749bd9c8f20486a1c1fc976aa91ab79cefb"
+          }
+        },
+        {
+          "client_id": "1088986692934-lsjvmidb6he55v5a4hm985c314kk222v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "sw.uagrm.flutter_app_2",
+            "certificate_hash": "e2ddc0379890c1a4021501b6ae85c1e896a4e3ce"
+          }
+        },
+        {
+          "client_id": "1088986692934-5l96arc36869ojo2o5f92m4htalfhl63.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlfnBwp0rO_-I6PXtDbQFgK7BnOBrABSk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1088986692934-5l96arc36869ojo2o5f92m4htalfhl63.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
