@@ -112,7 +112,7 @@ class _LoginPageState extends State<LoginPage> {
     return new FlatButton(
         child: new Text('Create an account',
             style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)),
-        onPressed: (){});
+        onPressed: (){_registrar();});
   }
 
   Widget showPrimaryButton() {
@@ -132,7 +132,11 @@ class _LoginPageState extends State<LoginPage> {
         ));
   }
 
-  _enviar() async {
+  _registrar() {
+
+  }
+
+  _enviar() {
     
     final prefs = new PreferenciasUsuario();
         
