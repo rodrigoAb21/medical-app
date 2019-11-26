@@ -64,6 +64,7 @@ flutter:
      - images/mimi7.gif
      - images/mimi8.gif
      - images/mimi9.gif
+     - assets/flutter-icon.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
