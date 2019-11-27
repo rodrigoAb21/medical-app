@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_2/pages/home_page.dart';
 
 import 'package:flutter_app_2/pages/login_page.dart';
+import 'package:flutter_app_2/pages/register_page.dart';
 import 'package:flutter_app_2/utils/preferencias_usuario.dart';
 
 
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
       routes: {
         HomePage.routeName : ( BuildContext context ) => HomePage(),
         LoginPage.routeName : ( BuildContext context ) => LoginPage(),
+        RegisterPage.routeName : ( BuildContext context ) => RegisterPage(),
       },
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_2/pages/home_page.dart';
+import 'package:flutter_app_2/pages/register_page.dart';
 import 'package:flutter_app_2/utils/preferencias_usuario.dart';
 
 class LoginPage extends StatefulWidget {
@@ -133,7 +134,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _registrar() {
-
+    Navigator.pushNamed(context, RegisterPage.routeName);
   }
 
   _enviar() {

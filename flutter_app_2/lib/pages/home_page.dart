@@ -5,14 +5,13 @@ import 'login_page.dart';
 
 class HomePage extends StatefulWidget {
   static final String routeName = 'home';
-  
+
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-
-   final prefs = new PreferenciasUsuario();
+  final prefs = new PreferenciasUsuario();
 
   @override
   Widget build(BuildContext context) {
@@ -25,18 +24,17 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(prefs.nombre),
-          Divider(),
-           Text(prefs.email),
-          Divider(),
-          RaisedButton(
+            Divider(),
+            Text(prefs.email),
+            Divider(),
+            RaisedButton(
               onPressed: () {
-               prefs.token = '';
-      prefs.email = '';
-      prefs.nombre = '';
-      Navigator.pushReplacementNamed(context, LoginPage.routeName);
-
+                prefs.token = '';
+                prefs.email = '';
+                prefs.nombre = '';
+                Navigator.pushReplacementNamed(context, LoginPage.routeName);
               },
-              child: Text("Marcar"),
+              child: Text("Log Out"),
               color: Colors.blue,
               textColor: Colors.white,
             )
@@ -45,6 +43,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
-
 }
