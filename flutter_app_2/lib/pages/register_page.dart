@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_2/pages/home_page.dart';
+import 'package:flutter_app_2/services/authentication.dart';
 import 'package:flutter_app_2/utils/preferencias_usuario.dart';
 
 class RegisterPage extends StatefulWidget {
   static final String routeName = 'registrar';
+  final BaseAuth auth = new Auth();
 
   @override
   _RegisterPageState createState() => _RegisterPageState();
@@ -122,18 +124,22 @@ class _RegisterPageState extends State<RegisterPage> {
         ));
   }
 
-  _enviar() {
-    final prefs = new PreferenciasUsuario();
-
-    prefs.nombre = _email;
-    prefs.email = _password;
-    prefs.token = 'Soy el tokken';
-
-    //Navigator.pushReplacementNamed(context, HomePage.routeName);
-    Navigator.pushAndRemoveUntil(
-  context,
-  MaterialPageRoute(builder: (context) => HomePage()),
-  (Route<dynamic> route) => false,
-);
+  _enviar() async {
+    String userId = '';
+    try {
+      userId = await widget.auth.signUp(_email, _password);
+      print('Signed in: $userId');
+    } catch (e) {
+      print('Error: $e');
+    }
+    if (userId != '') {
+      final prefs = new PreferenciasUsuario();
+      prefs.uid = userId;
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+        (Route<dynamic> route) => false,
+      );
+    }
   }
 }

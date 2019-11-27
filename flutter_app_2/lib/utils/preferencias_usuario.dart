@@ -11,8 +11,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 */
 
 class PreferenciasUsuario {
-
-  static final PreferenciasUsuario _instancia = new PreferenciasUsuario._internal();
+  static final PreferenciasUsuario _instancia =
+      new PreferenciasUsuario._internal();
 
   factory PreferenciasUsuario() {
     return _instancia;
@@ -26,40 +26,26 @@ class PreferenciasUsuario {
     this._prefs = await SharedPreferences.getInstance();
   }
 
-  String getPagina(){
-    if (this.token != null && this.token != '') {
+  String getPagina() {
+    if (this.uid != null && this.uid != '') {
       return 'home';
     }
     return 'login';
   }
 
-
-
-  get token {
-    return _prefs.getString('token') ?? '';
+  get uid {
+    return _prefs.getString('uid') ?? '';
   }
 
-  set token( String value ) {
-    _prefs.setString('token', value);
+  set uid(String value) {
+    _prefs.setString('uid', value);
   }
 
   get nombre {
     return _prefs.getString('nombre') ?? '';
   }
 
-  set nombre( String value ) {
+  set nombre(String value) {
     _prefs.setString('nombre', value);
   }
-
-  get email {
-    return _prefs.getString('email') ?? '';
-  }
-
-  set email( String value ) {
-    _prefs.setString('email', value);
-  }
-
-  
-
 }
-
