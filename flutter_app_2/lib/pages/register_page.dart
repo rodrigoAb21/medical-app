@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_2/pages/home_page.dart';
 import 'package:flutter_app_2/services/authentication.dart';
@@ -14,6 +15,17 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   String _email = '';
   String _password = '';
+  String _nombre = '';
+  String _edad = '';
+  bool isLoading = false;
+
+  int _sexo = 0; //0 = Masculino; 1 = Femenino
+
+  void _handleRadioValueChange1(int value) {
+    setState(() {
+      _sexo = value;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +38,19 @@ class _RegisterPageState extends State<RegisterPage> {
       body: Stack(
         children: <Widget>[
           _showForm(),
+          Positioned(
+            child: isLoading
+                ? Container(
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(Colors.orangeAccent),
+                      ),
+                    ),
+                    color: Colors.white.withOpacity(0.8),
+                  )
+                : Container(),
+          ),
         ],
       ),
     );
@@ -38,6 +63,9 @@ class _RegisterPageState extends State<RegisterPage> {
         shrinkWrap: true,
         children: <Widget>[
           showLogo(),
+          showNombreInput(),
+          showEdadInput(),
+          showSexo(),
           showEmailInput(),
           showPasswordInput(),
           showPrimaryButton(),
@@ -50,7 +78,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return new Hero(
       tag: 'hero',
       child: Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 70.0, 0.0, 0.0),
+        padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
         child: CircleAvatar(
           backgroundColor: Colors.transparent,
           radius: 48.0,
@@ -60,20 +88,102 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
+  Widget showNombreInput() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
+      child: new TextFormField(
+          maxLines: 1,
+          autofocus: false,
+          decoration: new InputDecoration(
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+              labelText: 'Nombre',
+              hintText: 'Nombre',
+              icon: new Icon(
+                Icons.account_circle,
+                color: Colors.grey,
+              )),
+          onChanged: (valor) {
+            setState(() {
+              _nombre = valor;
+            });
+          }),
+    );
+  }
+
+  Widget showEdadInput() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
+      child: new TextFormField(
+          maxLines: 1,
+          keyboardType: TextInputType.number,
+          autofocus: false,
+          decoration: new InputDecoration(
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+              labelText: 'Edad',
+              hintText: 'Edad',
+              icon: new Icon(
+                Icons.cake,
+                color: Colors.grey,
+              )),
+          onChanged: (valor) {
+            setState(() {
+              _edad = valor;
+            });
+          }),
+    );
+  }
+
+  Widget showSexo() {
+    return Padding(
+        padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
+        child: new Row(
+          children: <Widget>[
+            new Icon(
+              Icons.accessibility,
+              color: Colors.grey,
+            ),
+            new Radio(
+              value: 0,
+              groupValue: _sexo,
+              onChanged: _handleRadioValueChange1,
+            ),
+            new Text(
+              'Masculino',
+              style: new TextStyle(fontSize: 17.0),
+            ),
+            new Radio(
+              value: 1,
+              groupValue: _sexo,
+              onChanged: _handleRadioValueChange1,
+            ),
+            new Text(
+              'Femenino',
+              style: new TextStyle(
+                fontSize: 17.0,
+              ),
+            ),
+          ],
+        ));
+  }
+
   Widget showEmailInput() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0.0, 100.0, 0.0, 0.0),
+      padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
       child: new TextFormField(
           maxLines: 1,
           keyboardType: TextInputType.emailAddress,
           autofocus: false,
           decoration: new InputDecoration(
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+              labelText: 'Email',
               hintText: 'Email',
               icon: new Icon(
                 Icons.mail,
                 color: Colors.grey,
               )),
-          validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
           onChanged: (valor) {
             setState(() {
               _email = valor;
@@ -90,13 +200,14 @@ class _RegisterPageState extends State<RegisterPage> {
           obscureText: true,
           autofocus: false,
           decoration: new InputDecoration(
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+              labelText: 'Password',
               hintText: 'Password',
               icon: new Icon(
                 Icons.lock,
                 color: Colors.grey,
               )),
-          validator: (value) =>
-              value.isEmpty ? 'Password can\'t be empty' : null,
           onChanged: (valor) {
             setState(() {
               _password = valor;
@@ -107,7 +218,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Widget showPrimaryButton() {
     return new Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
+        padding: EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 0.0),
         child: SizedBox(
           height: 40.0,
           child: new RaisedButton(
@@ -125,7 +236,19 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   _enviar() async {
+    this.setState(() {
+      isLoading = true;
+    });
+
     String userId = '';
+    final usuario = {
+      'nombre': _nombre,
+      'email': _email,
+      'password': _password,
+      'edad': _edad,
+      'sexo': _sexo == 0 ? 'Masculino' : 'Femenino',
+    };
+
     try {
       userId = await widget.auth.signUp(_email, _password);
       print('Signed in: $userId');
@@ -133,8 +256,22 @@ class _RegisterPageState extends State<RegisterPage> {
       print('Error: $e');
     }
     if (userId != '') {
+      
+      await Firestore.instance
+          .collection('xxx')
+          .document(userId)
+          .setData(usuario).then((valor){
+            print('OK!!!!!!!!!!!!!!!');
+          }).catchError((e){
+            print(e);
+          });
+
       final prefs = new PreferenciasUsuario();
       prefs.uid = userId;
+      this.setState(() {
+        isLoading = false;
+      });
+
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => HomePage()),
