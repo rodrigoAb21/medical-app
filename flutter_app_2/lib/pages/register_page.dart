@@ -31,7 +31,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Registrar'),
+        title: Text('Registrarse'),
         centerTitle: true,
         backgroundColor: Colors.blue,
       ),
@@ -62,7 +62,6 @@ class _RegisterPageState extends State<RegisterPage> {
       child: new ListView(
         shrinkWrap: true,
         children: <Widget>[
-          showLogo(),
           showNombreInput(),
           showEdadInput(),
           showSexo(),
@@ -70,20 +69,6 @@ class _RegisterPageState extends State<RegisterPage> {
           showPasswordInput(),
           showPrimaryButton(),
         ],
-      ),
-    );
-  }
-
-  Widget showLogo() {
-    return new Hero(
-      tag: 'hero',
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
-        child: CircleAvatar(
-          backgroundColor: Colors.transparent,
-          radius: 48.0,
-          child: Image.asset('assets/flutter-icon.png'),
-        ),
       ),
     );
   }
@@ -220,11 +205,11 @@ class _RegisterPageState extends State<RegisterPage> {
     return new Padding(
         padding: EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 0.0),
         child: SizedBox(
-          height: 40.0,
+          height: 60.0,
           child: new RaisedButton(
             elevation: 5.0,
             shape: new RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(30.0)),
+                borderRadius: new BorderRadius.circular(15.0)),
             color: Colors.blue,
             child: new Text('Guardar',
                 style: new TextStyle(fontSize: 20.0, color: Colors.white)),

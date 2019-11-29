@@ -78,18 +78,20 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget showEmailInput() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0.0, 100.0, 0.0, 0.0),
+      padding: const EdgeInsets.fromLTRB(0.0, 70.0, 0.0, 0.0),
       child: new TextFormField(
           maxLines: 1,
           keyboardType: TextInputType.emailAddress,
           autofocus: false,
           decoration: new InputDecoration(
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+              labelText: 'Email',
               hintText: 'Email',
               icon: new Icon(
                 Icons.mail,
                 color: Colors.grey,
               )),
-          validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
           onChanged: (valor) {
             setState(() {
               _email = valor;
@@ -106,13 +108,14 @@ class _LoginPageState extends State<LoginPage> {
           obscureText: true,
           autofocus: false,
           decoration: new InputDecoration(
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+              labelText: 'Password',
               hintText: 'Password',
               icon: new Icon(
                 Icons.lock,
                 color: Colors.grey,
               )),
-          validator: (value) =>
-              value.isEmpty ? 'Password can\'t be empty' : null,
           onChanged: (valor) {
             setState(() {
               _password = valor;
@@ -123,7 +126,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget showSecondaryButton() {
     return new FlatButton(
-        child: new Text('Create an account',
+        child: new Text('Registrarse',
             style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)),
         onPressed: () {
           _registrar();
@@ -132,15 +135,15 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget showPrimaryButton() {
     return new Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
+        padding: EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 10.0),
         child: SizedBox(
-          height: 40.0,
+          height: 60.0,
           child: new RaisedButton(
             elevation: 5.0,
             shape: new RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(30.0)),
+                borderRadius: new BorderRadius.circular(15.0)),
             color: Colors.blue,
-            child: new Text('Login',
+            child: new Text('Iniciar Sesion',
                 style: new TextStyle(fontSize: 20.0, color: Colors.white)),
             onPressed: () {
               _enviar();
@@ -165,6 +168,9 @@ class _LoginPageState extends State<LoginPage> {
     } catch (e) {
       print('Error: $e');
     }
+    this.setState(() {
+      isLoading = false;
+    });
     if (userId != '') {
       final prefs = new PreferenciasUsuario();
       prefs.uid = userId;
