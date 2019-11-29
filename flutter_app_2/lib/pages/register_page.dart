@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_2/pages/home_page.dart';
 import 'package:flutter_app_2/services/authentication.dart';
 import 'package:flutter_app_2/utils/preferencias_usuario.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class RegisterPage extends StatefulWidget {
   static final String routeName = 'registrar';
@@ -214,10 +215,24 @@ class _RegisterPageState extends State<RegisterPage> {
             child: new Text('Guardar',
                 style: new TextStyle(fontSize: 20.0, color: Colors.white)),
             onPressed: () {
-              _enviar();
+              _verificar();
             },
           ),
         ));
+  }
+
+  _verificar() {
+    this.setState(() {
+      _nombre = _nombre.trim();
+      _email = _email.trim();
+      _password = _password.trim();
+      _edad = _edad.trim();
+    });
+    if (_nombre != '' && _email != '' && _password != '' && _edad != '') {
+      _enviar();
+    } else {
+      Fluttertoast.showToast(msg: "Rellene todos los campos");
+    }
   }
 
   _enviar() async {
@@ -241,15 +256,16 @@ class _RegisterPageState extends State<RegisterPage> {
       print('Error: $e');
     }
     if (userId != '') {
-      
       await Firestore.instance
           .collection('xxx')
           .document(userId)
-          .setData(usuario).then((valor){
-            print('OK!!!!!!!!!!!!!!!');
-          }).catchError((e){
-            print(e);
-          });
+          .setData(usuario)
+          .then((valor) {
+        print('OK!!!!!!!!!!!!!!!');
+        Fluttertoast.showToast(msg: "Registro exitoso");
+      }).catchError((e) {
+        print(e);
+      });
 
       final prefs = new PreferenciasUsuario();
       prefs.uid = userId;

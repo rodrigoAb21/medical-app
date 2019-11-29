@@ -3,6 +3,7 @@ import 'package:flutter_app_2/pages/home_page.dart';
 import 'package:flutter_app_2/pages/register_page.dart';
 import 'package:flutter_app_2/services/authentication.dart';
 import 'package:flutter_app_2/utils/preferencias_usuario.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginPage extends StatefulWidget {
   static final String routeName = 'login';
@@ -146,7 +147,7 @@ class _LoginPageState extends State<LoginPage> {
             child: new Text('Iniciar Sesion',
                 style: new TextStyle(fontSize: 20.0, color: Colors.white)),
             onPressed: () {
-              _enviar();
+              _verificar();
             },
           ),
         ));
@@ -156,6 +157,14 @@ class _LoginPageState extends State<LoginPage> {
     Navigator.pushNamed(context, RegisterPage.routeName);
   }
 
+  _verificar() {
+    if (_email != '' && _password != '') {
+      _enviar();
+    } else {
+      Fluttertoast.showToast(msg: "Rellene todos los campos");
+    }
+  }
+
   _enviar() async {
     this.setState(() {
       isLoading = true;
@@ -163,10 +172,11 @@ class _LoginPageState extends State<LoginPage> {
 
     String userId = '';
     try {
-      userId = await widget.auth.signIn(_email, _password);
+      userId = await widget.auth.signIn(_email.trim(), _password.trim());
       print('Signed in: $userId');
     } catch (e) {
       print('Error: $e');
+      Fluttertoast.showToast(msg: "Verifique Email y password");
     }
     this.setState(() {
       isLoading = false;
@@ -177,7 +187,7 @@ class _LoginPageState extends State<LoginPage> {
       this.setState(() {
         isLoading = false;
       });
-
+      Fluttertoast.showToast(msg: "Inicio de sesion exitoso.");
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => HomePage()),
