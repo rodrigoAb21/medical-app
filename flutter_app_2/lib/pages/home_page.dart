@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_2/pages/lista_medicos.dart';
 import 'package:flutter_app_2/services/authentication.dart';
 import 'package:flutter_app_2/utils/preferencias_usuario.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -105,6 +106,8 @@ class _HomePageState extends State<HomePage> {
 
   void _cardEntryComplete() {
     print('!!!!!!!!!!!!!!!!!!!!!!!!!!_cardEntryComplete!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    prefs.pago = true;
+    Navigator.pushReplacementNamed(context,ListaMedicosPage.routeName);
   }
 
   _cerrarSesion() async {
@@ -112,6 +115,7 @@ class _HomePageState extends State<HomePage> {
       await widget.auth.signOut();
       prefs.uid = '';
       prefs.nombre = '';
+      prefs.pago = false;
       Navigator.pushReplacementNamed(context, LoginPage.routeName);
       Fluttertoast.showToast(msg: "Sesion terminada.");
       print('Cerrando sesion');

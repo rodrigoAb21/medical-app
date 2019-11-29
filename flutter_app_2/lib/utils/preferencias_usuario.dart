@@ -28,7 +28,11 @@ class PreferenciasUsuario {
 
   String getPagina() {
     if (this.uid != null && this.uid != '') {
-      return 'home';
+      if (this.pago) {
+        return 'lista_medicos';
+      } else {
+        return 'home';
+      }
     }
     return 'login';
   }
@@ -47,5 +51,13 @@ class PreferenciasUsuario {
 
   set nombre(String value) {
     _prefs.setString('nombre', value);
+  }
+
+  get pago {
+    return _prefs.getBool('pago') ?? false;
+  }
+
+  set pago(bool value) {
+    _prefs.setBool('pago', value);
   }
 }
