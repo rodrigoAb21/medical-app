@@ -241,13 +241,6 @@ class _RegisterPageState extends State<RegisterPage> {
     });
 
     String userId = '';
-    final usuario = {
-      'nombre': _nombre,
-      'email': _email,
-      'password': _password,
-      'edad': _edad,
-      'sexo': _sexo == 0 ? 'Masculino' : 'Femenino',
-    };
 
     try {
       userId = await widget.auth.signUp(_email, _password);
@@ -256,12 +249,19 @@ class _RegisterPageState extends State<RegisterPage> {
       print('Error: $e');
     }
     if (userId != '') {
+      final usuario = {
+        'uid': userId,
+        'nombre': _nombre,
+        'email': _email,
+        'password': _password,
+        'edad': _edad,
+        'sexo': _sexo == 0 ? 'Masculino' : 'Femenino',
+      };
       await Firestore.instance
           .collection('xxx')
           .document(userId)
           .setData(usuario)
           .then((valor) {
-        print('OK!!!!!!!!!!!!!!!');
         Fluttertoast.showToast(msg: "Registro exitoso");
       }).catchError((e) {
         print(e);

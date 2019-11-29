@@ -168,11 +168,13 @@ class _LoginPageState extends State<LoginPage> {
   _enviar() async {
     this.setState(() {
       isLoading = true;
+      _email = _email.trim();
+      _password = _password.trim();
     });
 
     String userId = '';
     try {
-      userId = await widget.auth.signIn(_email.trim(), _password.trim());
+      userId = await widget.auth.signIn(_email, _password);
       print('Signed in: $userId');
     } catch (e) {
       print('Error: $e');
@@ -187,7 +189,7 @@ class _LoginPageState extends State<LoginPage> {
       this.setState(() {
         isLoading = false;
       });
-      Fluttertoast.showToast(msg: "Inicio de sesion exitoso.");
+      Fluttertoast.showToast(msg: "Sesion iniciada");
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => HomePage()),
