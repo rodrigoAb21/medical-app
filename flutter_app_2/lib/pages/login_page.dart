@@ -58,6 +58,7 @@ class _LoginPageState extends State<LoginPage> {
           showPasswordInput(),
           showPrimaryButton(),
           showSecondaryButton(),
+          showThirdButton(),
         ],
       ),
     );
@@ -127,7 +128,16 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget showSecondaryButton() {
     return new FlatButton(
-        child: new Text('Registrarse',
+        child: new Text('Registro de usuario',
+            style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)),
+        onPressed: () {
+          _registrar();
+        });
+  }
+
+  Widget showThirdButton() {
+    return new FlatButton(
+        child: new Text('Registro de medico',
             style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)),
         onPressed: () {
           _registrar();
@@ -136,7 +146,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget showPrimaryButton() {
     return new Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 10.0),
+        padding: EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 20.0),
         child: SizedBox(
           height: 60.0,
           child: new RaisedButton(
