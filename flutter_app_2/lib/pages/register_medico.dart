@@ -5,15 +5,15 @@ import 'package:flutter_app_2/services/authentication.dart';
 import 'package:flutter_app_2/utils/preferencias_usuario.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class RegisterPage extends StatefulWidget {
+class RegisterMedicoPage extends StatefulWidget {
   static final String routeName = 'registrar';
   final BaseAuth auth = new Auth();
 
   @override
-  _RegisterPageState createState() => _RegisterPageState();
+  _RegisterMedicoPageState createState() => _RegisterMedicoPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class _RegisterMedicoPageState extends State<RegisterMedicoPage> {
   String _email = '';
   String _password = '';
   String _nombre = '';
