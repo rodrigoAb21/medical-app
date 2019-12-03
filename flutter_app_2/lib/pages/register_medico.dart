@@ -14,25 +14,19 @@ class RegisterMedicoPage extends StatefulWidget {
 }
 
 class _RegisterMedicoPageState extends State<RegisterMedicoPage> {
+  String _nombre = '';
+  String _matricula = '';
+  String _telefono = '';
   String _email = '';
   String _password = '';
-  String _nombre = '';
-  String _edad = '';
   bool isLoading = false;
 
-  int _sexo = 0; //0 = Masculino; 1 = Femenino
-
-  void _handleRadioValueChange1(int value) {
-    setState(() {
-      _sexo = value;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Registrarse'),
+        title: Text('Registro de Medico'),
         centerTitle: true,
         backgroundColor: Colors.blue,
       ),
@@ -64,8 +58,7 @@ class _RegisterMedicoPageState extends State<RegisterMedicoPage> {
         shrinkWrap: true,
         children: <Widget>[
           showNombreInput(),
-          showEdadInput(),
-          showSexo(),
+          showMatriculaInput(),
           showTelefonoInput(),
           showEmailInput(),
           showPasswordInput(),
@@ -98,25 +91,24 @@ class _RegisterMedicoPageState extends State<RegisterMedicoPage> {
     );
   }
 
-  Widget showEdadInput() {
+  Widget showMatriculaInput() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
       child: new TextFormField(
           maxLines: 1,
-          keyboardType: TextInputType.number,
           autofocus: false,
           decoration: new InputDecoration(
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
-              labelText: 'Edad',
-              hintText: 'Edad',
+              labelText: 'Matricula',
+              hintText: 'Matricula',
               icon: new Icon(
-                Icons.cake,
+                Icons.account_balance,
                 color: Colors.grey,
               )),
           onChanged: (valor) {
             setState(() {
-              _edad = valor;
+              _matricula = valor;
             });
           }),
     );
@@ -136,48 +128,15 @@ class _RegisterMedicoPageState extends State<RegisterMedicoPage> {
               labelText: 'Telefono',
               hintText: 'Telefono',
               icon: new Icon(
-                Icons.cake,
+                Icons.phone,
                 color: Colors.grey,
               )),
           onChanged: (valor) {
             setState(() {
-              _edad = valor;
+              _telefono = valor;
             });
           }),
     );
-  }
-
-  Widget showSexo() {
-    return Padding(
-        padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
-        child: new Row(
-          children: <Widget>[
-            new Icon(
-              Icons.accessibility,
-              color: Colors.grey,
-            ),
-            new Radio(
-              value: 0,
-              groupValue: _sexo,
-              onChanged: _handleRadioValueChange1,
-            ),
-            new Text(
-              'Masculino',
-              style: new TextStyle(fontSize: 17.0),
-            ),
-            new Radio(
-              value: 1,
-              groupValue: _sexo,
-              onChanged: _handleRadioValueChange1,
-            ),
-            new Text(
-              'Femenino',
-              style: new TextStyle(
-                fontSize: 17.0,
-              ),
-            ),
-          ],
-        ));
   }
 
   Widget showEmailInput() {
@@ -252,16 +211,17 @@ class _RegisterMedicoPageState extends State<RegisterMedicoPage> {
       _nombre = _nombre.trim();
       _email = _email.trim();
       _password = _password.trim();
-      _edad = _edad.trim();
+      _matricula = _matricula.trim();
+      _telefono = _telefono.trim();
     });
-    if (_nombre != '' && _email != '' && _password != '' && _edad != '' && _password.length >= 6) {
-      _enviar();
+    if (_nombre != '' && _email != '' && _telefono != '' && _password != '' && _matricula != '' && _password.length >= 6) {
+      _registrar();
     } else {
       Fluttertoast.showToast(msg: "Rellene todos los campos");
     }
   }
 
-  _enviar() async {
+  _registrar() async {
     this.setState(() {
       isLoading = true;
     });
@@ -280,21 +240,24 @@ class _RegisterMedicoPageState extends State<RegisterMedicoPage> {
         'nombre': _nombre,
         'email': _email,
         'password': _password,
-        'edad': _edad,
-        'sexo': _sexo == 0 ? 'Masculino' : 'Femenino',
+        'matricula': _matricula,
+        'telefono': _telefono,
+        'tipo': 'Medico',
       };
       await Firestore.instance
-          .collection('xxx')
+          .collection('usuarios')
           .document(userId)
           .setData(usuario)
           .then((valor) {
         Fluttertoast.showToast(msg: "Registro exitoso");
       }).catchError((e) {
+        Fluttertoast.showToast(msg: "No se pudieron guardar todos sus datos.");
         print(e);
       });
 
       final prefs = new PreferenciasUsuario();
       prefs.id = userId;
+      prefs.tipo = 'Medico';
       this.setState(() {
         isLoading = false;
       });

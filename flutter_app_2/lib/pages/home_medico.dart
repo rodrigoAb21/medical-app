@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_2/services/authentication.dart';
 import 'package:flutter_app_2/utils/preferencias_usuario.dart';
@@ -45,6 +46,7 @@ class _HomeMedicoPageState extends State<HomeMedicoPage> {
   _cerrarSesion() async {
     try {
       await widget.auth.signOut();
+      await Firestore.instance.collection('usuarios').document(prefs.id).updateData({'online': false});
       prefs.id = '';
       prefs.nombre = '';
       prefs.pago = false;

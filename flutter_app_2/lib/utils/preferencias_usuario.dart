@@ -66,7 +66,7 @@ class PreferenciasUsuario {
   }
 
   get tipo {
-    return _prefs.getString('tipo') ?? false;
+    return _prefs.getString('tipo') ?? '';
   }
 
   set tipo(String value) {

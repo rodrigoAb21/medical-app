@@ -33,7 +33,7 @@ class _RegisterUsuarioPageState extends State<RegisterUsuarioPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Registrarse'),
+        title: Text('Registro de Usuario'),
         centerTitle: true,
         backgroundColor: Colors.blue,
       ),

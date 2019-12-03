@@ -222,6 +222,7 @@ class _LoginPageState extends State<LoginPage> {
             (Route<dynamic> route) => false,
           );
         } else {
+          await Firestore.instance.collection('usuarios').document(userId).updateData({'online': true});
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => HomeMedicoPage()),
