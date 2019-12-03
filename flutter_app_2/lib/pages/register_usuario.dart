@@ -1,23 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_2/pages/home_page.dart';
+import 'package:flutter_app_2/pages/home_usuario.dart';
 import 'package:flutter_app_2/services/authentication.dart';
 import 'package:flutter_app_2/utils/preferencias_usuario.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class RegisterPage extends StatefulWidget {
-  static final String routeName = 'registrar';
+class RegisterUsuarioPage extends StatefulWidget {
+  static final String routeName = 'registrar_usuario';
   final BaseAuth auth = new Auth();
 
   @override
-  _RegisterPageState createState() => _RegisterPageState();
+  _RegisterUsuarioPageState createState() => _RegisterUsuarioPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class _RegisterUsuarioPageState extends State<RegisterUsuarioPage> {
   String _email = '';
   String _password = '';
   String _nombre = '';
   String _edad = '';
+  String _telefono = '';
   bool isLoading = false;
 
   int _sexo = 0; //0 = Masculino; 1 = Femenino
@@ -136,12 +137,12 @@ class _RegisterPageState extends State<RegisterPage> {
               labelText: 'Telefono',
               hintText: 'Telefono',
               icon: new Icon(
-                Icons.cake,
+                Icons.phone,
                 color: Colors.grey,
               )),
           onChanged: (valor) {
             setState(() {
-              _edad = valor;
+              _telefono = valor;
             });
           }),
     );
@@ -253,15 +254,16 @@ class _RegisterPageState extends State<RegisterPage> {
       _email = _email.trim();
       _password = _password.trim();
       _edad = _edad.trim();
+      _telefono = _telefono.trim();
     });
-    if (_nombre != '' && _email != '' && _password != '' && _edad != '' && _password.length >= 6) {
-      _enviar();
+    if (_nombre != '' && _email != '' && _telefono != '' && _password != '' && _edad != '' && _password.length >= 6) {
+      _registrar();
     } else {
       Fluttertoast.showToast(msg: "Rellene todos los campos");
     }
   }
 
-  _enviar() async {
+  _registrar() async {
     this.setState(() {
       isLoading = true;
     });
@@ -276,32 +278,36 @@ class _RegisterPageState extends State<RegisterPage> {
     }
     if (userId != '') {
       final usuario = {
-        'uid': userId,
+        'id': userId,
         'nombre': _nombre,
         'email': _email,
         'password': _password,
         'edad': _edad,
+        'telefono': _telefono,
+        'tipo': 'Usuario',
         'sexo': _sexo == 0 ? 'Masculino' : 'Femenino',
       };
       await Firestore.instance
-          .collection('xxx')
+          .collection('usuarios')
           .document(userId)
           .setData(usuario)
           .then((valor) {
         Fluttertoast.showToast(msg: "Registro exitoso");
       }).catchError((e) {
+        Fluttertoast.showToast(msg: "No se pudieron guardar todos sus datos.");
         print(e);
       });
 
       final prefs = new PreferenciasUsuario();
-      prefs.uid = userId;
+      prefs.id = userId;
+      prefs.tipo = 'Usuario';
       this.setState(() {
         isLoading = false;
       });
 
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => HomePage()),
+        MaterialPageRoute(builder: (context) => HomeUsuarioPage()),
         (Route<dynamic> route) => false,
       );
     }

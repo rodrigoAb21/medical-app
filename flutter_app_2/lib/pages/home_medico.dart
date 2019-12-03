@@ -3,29 +3,29 @@ import 'package:flutter_app_2/services/authentication.dart';
 import 'package:flutter_app_2/utils/preferencias_usuario.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import 'home_usuario.dart';
+import 'login_page.dart';
 
-class ListaMedicosPage extends StatefulWidget {
-  static final String routeName = 'lista_medicos';
+class HomeMedicoPage extends StatefulWidget {
+  static final String routeName = 'home_medico';
   final BaseAuth auth = new Auth();
 
   @override
-  _ListaMedicosPageState createState() => _ListaMedicosPageState();
+  _HomeMedicoPageState createState() => _HomeMedicoPageState();
 }
 
-class _ListaMedicosPageState extends State<ListaMedicosPage> {
+class _HomeMedicoPageState extends State<HomeMedicoPage> {
   final prefs = new PreferenciasUsuario();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Medicos disponibles'),
+        title: Text("Principal"),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.close),
+            icon: Icon(Icons.exit_to_app),
             onPressed: () {
-              _terminarConsulta();
+              _cerrarSesion();
             },
           )
         ],
@@ -34,18 +34,23 @@ class _ListaMedicosPageState extends State<ListaMedicosPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text("data")
+            Text('HOME MEDICO')
           ],
         ),
       ),
     );
   }
 
-  _terminarConsulta() async {
+  
+  _cerrarSesion() async {
     try {
+      await widget.auth.signOut();
+      prefs.id = '';
+      prefs.nombre = '';
       prefs.pago = false;
-      Fluttertoast.showToast(msg: "Consulta finalizada.");
-      Navigator.pushReplacementNamed(context, HomeUsuarioPage.routeName);
+      Navigator.pushReplacementNamed(context, LoginPage.routeName);
+      Fluttertoast.showToast(msg: "Sesion terminada.");
+      print('Cerrando sesion');
     } catch (e) {
       print('error: $e');
     }

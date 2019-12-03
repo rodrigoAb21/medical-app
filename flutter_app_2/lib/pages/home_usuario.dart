@@ -8,15 +8,15 @@ import 'package:square_in_app_payments/models.dart';
 
 import 'login_page.dart';
 
-class HomePage extends StatefulWidget {
-  static final String routeName = 'home';
+class HomeUsuarioPage extends StatefulWidget {
+  static final String routeName = 'home_usuario';
   final BaseAuth auth = new Auth();
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomeUsuarioPageState createState() => _HomeUsuarioPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomeUsuarioPageState extends State<HomeUsuarioPage> {
   final prefs = new PreferenciasUsuario();
 
   @override
@@ -113,7 +113,7 @@ class _HomePageState extends State<HomePage> {
   _cerrarSesion() async {
     try {
       await widget.auth.signOut();
-      prefs.uid = '';
+      prefs.id = '';
       prefs.nombre = '';
       prefs.pago = false;
       Navigator.pushReplacementNamed(context, LoginPage.routeName);

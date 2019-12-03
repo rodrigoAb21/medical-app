@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_2/pages/home_page.dart';
+import 'package:flutter_app_2/pages/home_medico.dart';
 import 'package:flutter_app_2/services/authentication.dart';
 import 'package:flutter_app_2/utils/preferencias_usuario.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class RegisterMedicoPage extends StatefulWidget {
-  static final String routeName = 'registrar';
+  static final String routeName = 'registrar_medico';
   final BaseAuth auth = new Auth();
 
   @override
@@ -276,7 +276,7 @@ class _RegisterMedicoPageState extends State<RegisterMedicoPage> {
     }
     if (userId != '') {
       final usuario = {
-        'uid': userId,
+        'id': userId,
         'nombre': _nombre,
         'email': _email,
         'password': _password,
@@ -294,14 +294,14 @@ class _RegisterMedicoPageState extends State<RegisterMedicoPage> {
       });
 
       final prefs = new PreferenciasUsuario();
-      prefs.uid = userId;
+      prefs.id = userId;
       this.setState(() {
         isLoading = false;
       });
 
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => HomePage()),
+        MaterialPageRoute(builder: (context) => HomeMedicoPage()),
         (Route<dynamic> route) => false,
       );
     }

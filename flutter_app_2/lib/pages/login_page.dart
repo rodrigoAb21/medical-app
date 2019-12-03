@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_2/pages/home_page.dart';
-import 'package:flutter_app_2/pages/register_page.dart';
+import 'package:flutter_app_2/pages/home_medico.dart';
+import 'package:flutter_app_2/pages/home_usuario.dart';
+import 'package:flutter_app_2/pages/register_medico.dart';
+import 'package:flutter_app_2/pages/register_usuario.dart';
 import 'package:flutter_app_2/services/authentication.dart';
 import 'package:flutter_app_2/utils/preferencias_usuario.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -131,7 +134,7 @@ class _LoginPageState extends State<LoginPage> {
         child: new Text('Registro de usuario',
             style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)),
         onPressed: () {
-          _registrar();
+          _registrarUsuario();
         });
   }
 
@@ -140,7 +143,7 @@ class _LoginPageState extends State<LoginPage> {
         child: new Text('Registro de medico',
             style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)),
         onPressed: () {
-          _registrar();
+          _registrarMedico();
         });
   }
 
@@ -163,19 +166,23 @@ class _LoginPageState extends State<LoginPage> {
         ));
   }
 
-  _registrar() {
-    Navigator.pushNamed(context, RegisterPage.routeName);
+  _registrarUsuario() {
+    Navigator.pushNamed(context, RegisterUsuarioPage.routeName);
+  }
+
+  _registrarMedico() {
+    Navigator.pushNamed(context, RegisterMedicoPage.routeName);
   }
 
   _verificar() {
     if (_email != '' && _password != '') {
-      _enviar();
+      _login();
     } else {
       Fluttertoast.showToast(msg: "Rellene todos los campos");
     }
   }
 
-  _enviar() async {
+  _login() async {
     this.setState(() {
       isLoading = true;
       _email = _email.trim();
@@ -190,21 +197,41 @@ class _LoginPageState extends State<LoginPage> {
       print('Error: $e');
       Fluttertoast.showToast(msg: "Verifique Email y password");
     }
+    if (userId != '') {
+      final prefs = new PreferenciasUsuario();
+      prefs.id = userId;
+
+      final String tipo = await Firestore.instance
+          .collection('usuarios')
+          .document(userId)
+          .get()
+          .then((DocumentSnapshot ds) {
+        return ds['tipo'];
+      });
+      
+      prefs.tipo = tipo;
+
+      if (tipo != null) {
+        this.setState(() {
+        isLoading = false;
+      });
+        if (tipo == 'Usuario') {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => HomeUsuarioPage()),
+            (Route<dynamic> route) => false,
+          );
+        } else {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => HomeMedicoPage()),
+            (Route<dynamic> route) => false,
+          );
+        }
+      }
+    }
     this.setState(() {
       isLoading = false;
     });
-    if (userId != '') {
-      final prefs = new PreferenciasUsuario();
-      prefs.uid = userId;
-      this.setState(() {
-        isLoading = false;
-      });
-      Fluttertoast.showToast(msg: "Sesion iniciada");
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => HomePage()),
-        (Route<dynamic> route) => false,
-      );
-    }
   }
 }

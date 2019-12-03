@@ -27,22 +27,26 @@ class PreferenciasUsuario {
   }
 
   String getPagina() {
-    if (this.uid != null && this.uid != '') {
-      if (this.pago) {
-        return 'lista_medicos';
+    if (this.id != null && this.id != '' && this.tipo != '') {
+      if (this.tipo == 'Medico') {
+        return 'home_medico';
       } else {
-        return 'home';
+        if (this.pago) {
+          return 'lista_medicos';
+        } else {
+          return 'home_usuario';
+        }
       }
     }
     return 'login';
   }
 
-  get uid {
-    return _prefs.getString('uid') ?? '';
+  get id {
+    return _prefs.getString('id') ?? '';
   }
 
-  set uid(String value) {
-    _prefs.setString('uid', value);
+  set id(String value) {
+    _prefs.setString('id', value);
   }
 
   get nombre {
@@ -59,5 +63,13 @@ class PreferenciasUsuario {
 
   set pago(bool value) {
     _prefs.setBool('pago', value);
+  }
+
+  get tipo {
+    return _prefs.getString('tipo') ?? false;
+  }
+
+  set tipo(String value) {
+    _prefs.setString('tipo', value);
   }
 }
