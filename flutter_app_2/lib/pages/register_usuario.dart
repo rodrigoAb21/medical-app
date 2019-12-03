@@ -284,6 +284,8 @@ class _RegisterUsuarioPageState extends State<RegisterUsuarioPage> {
         'password': _password,
         'edad': _edad,
         'telefono': _telefono,
+        'chattingWith' : null,
+        'photoUrl' : null,
         'tipo': 'Usuario',
         'sexo': _sexo == 0 ? 'Masculino' : 'Femenino',
       };

@@ -243,6 +243,8 @@ class _RegisterMedicoPageState extends State<RegisterMedicoPage> {
         'matricula': _matricula,
         'telefono': _telefono,
         'tipo': 'Medico',
+        'chattingWith' : null,
+        'photoUrl' : null,
       };
       await Firestore.instance
           .collection('usuarios')
