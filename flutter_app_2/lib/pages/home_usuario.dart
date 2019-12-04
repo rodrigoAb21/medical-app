@@ -50,7 +50,7 @@ class _HomeUsuarioPageState extends State<HomeUsuarioPage> {
         padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
         child: SizedBox(
           height: 90.0,
-          width: 250.0,
+          width: 290.0,
           child: new RaisedButton(
             elevation: 5.0,
             shape: new RoundedRectangleBorder(
@@ -70,7 +70,7 @@ class _HomeUsuarioPageState extends State<HomeUsuarioPage> {
         padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 10.0),
         child: SizedBox(
           height: 90.0,
-          width: 250.0,
+          width: 290.0,
           child: new RaisedButton(
             elevation: 5.0,
             shape: new RoundedRectangleBorder(

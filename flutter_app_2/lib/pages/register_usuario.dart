@@ -285,7 +285,7 @@ class _RegisterUsuarioPageState extends State<RegisterUsuarioPage> {
         'edad': _edad,
         'telefono': _telefono,
         'chattingWith' : null,
-        'photoUrl' : null,
+        'photoUrl' : 'https://agendavirtual.vpsnotas.com/Content/Images/default-user.png',
         'tipo': 'Usuario',
         'sexo': _sexo == 0 ? 'Masculino' : 'Femenino',
       };
