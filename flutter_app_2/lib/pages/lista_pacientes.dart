@@ -30,8 +30,6 @@ class ListaPacientesPageState extends State<ListaPacientesPage> {
 
   @override
   Widget build(BuildContext context) {
-    print('lista consultas::::::::::::::'+Firestore.instance.collection('consultas').document(prefs.id).get(source: 'pacientes').toString());
-    
     return Scaffold(
       appBar: AppBar(
         title: Text('Lista de Pacientes'),
@@ -45,7 +43,8 @@ class ListaPacientesPageState extends State<ListaPacientesPage> {
 
                 stream: 
                 
-                Firestore.instance.collection('usuarios').where('tipo', isEqualTo: 'Usuario').snapshots()
+                Firestore.instance.collection('usuarios').where('doctor', isEqualTo: prefs.id).snapshots()
+                 //no cambie nada :'v
                 ,
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
@@ -88,7 +87,9 @@ class ListaPacientesPageState extends State<ListaPacientesPage> {
   }
 
    Widget buildItem(BuildContext context, DocumentSnapshot document) {
-    if (document['id'] == prefs.id) {
+    if (
+      document['id'] == prefs.id
+      ) {
       return Container();
     } else {
       return Container(
