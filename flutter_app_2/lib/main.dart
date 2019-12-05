@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_2/pages/home_medico.dart';
 import 'package:flutter_app_2/pages/home_usuario.dart';
 import 'package:flutter_app_2/pages/lista_medicos.dart';
+import 'package:flutter_app_2/pages/lista_pacientes.dart';
 
 import 'package:flutter_app_2/pages/login_page.dart';
 import 'package:flutter_app_2/pages/register_usuario.dart';
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
         RegisterUsuarioPage.routeName : ( BuildContext context ) => RegisterUsuarioPage(),
         RegisterMedicoPage.routeName : ( BuildContext context ) => RegisterMedicoPage(),
         ListaMedicosPage.routeName : ( BuildContext context ) => ListaMedicosPage(),
+        ListaPacientesPage.routeName: (BuildContext context ) => ListaPacientesPage()
       },
     );
   }

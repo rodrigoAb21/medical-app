@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_2/pages/home_medico.dart';
 import 'package:flutter_app_2/pages/home_usuario.dart';
+import 'package:flutter_app_2/pages/lista_pacientes.dart';
 import 'package:flutter_app_2/pages/register_medico.dart';
 import 'package:flutter_app_2/pages/register_usuario.dart';
 import 'package:flutter_app_2/services/authentication.dart';
@@ -225,7 +226,7 @@ class _LoginPageState extends State<LoginPage> {
           await Firestore.instance.collection('usuarios').document(userId).updateData({'online': true});
           Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => HomeMedicoPage()),
+            MaterialPageRoute(builder: (context) => ListaPacientesPage()),
             (Route<dynamic> route) => false,
           );
         }
