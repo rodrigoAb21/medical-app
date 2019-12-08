@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_2/pages/chatbot.dart';
 import 'package:flutter_app_2/pages/lista_medicos.dart';
 import 'package:flutter_app_2/services/authentication.dart';
 import 'package:flutter_app_2/utils/preferencias_usuario.dart';
@@ -130,6 +131,12 @@ class _HomeUsuarioPageState extends State<HomeUsuarioPage> {
   }
 
   _irDiagnosticoInteligente() {
-    print("CHAT CON IA");
+    _handleURLButtonPress(context, 'https://symptomate.com/chatbot/');
+  }
+
+
+  void _handleURLButtonPress(BuildContext context, String url) {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => WebViewContainer(url)));
   }
 }

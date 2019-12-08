@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_2/pages/home_medico.dart';
 import 'package:flutter_app_2/pages/home_usuario.dart';
 import 'package:flutter_app_2/pages/lista_pacientes.dart';
 import 'package:flutter_app_2/pages/register_medico.dart';

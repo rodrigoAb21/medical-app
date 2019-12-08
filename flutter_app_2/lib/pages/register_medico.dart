@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_2/pages/home_medico.dart';
+import 'package:flutter_app_2/pages/lista_pacientes.dart';
 import 'package:flutter_app_2/services/authentication.dart';
 import 'package:flutter_app_2/utils/preferencias_usuario.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -266,7 +266,7 @@ class _RegisterMedicoPageState extends State<RegisterMedicoPage> {
 
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => HomeMedicoPage()),
+        MaterialPageRoute(builder: (context) => ListaPacientesPage()),
         (Route<dynamic> route) => false,
       );
     }
