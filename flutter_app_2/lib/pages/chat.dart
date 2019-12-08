@@ -22,11 +22,7 @@ class Chat extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text(
-          'CHAT',
-          style: TextStyle(color: primaryColor, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
+        title: new Text('Consulta Medica'),
       ),
       body: new ChatScreen(
         peerId: peerId,
@@ -57,7 +53,6 @@ class ChatScreenState extends State<ChatScreen> {
 
   var listMessage;
   String groupChatId;
-  //SharedPreferences prefs;
 
   File imageFile;
   bool isLoading;
