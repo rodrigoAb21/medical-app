@@ -4,13 +4,17 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_2/pages/chat.dart';
+import 'package:flutter_app_2/services/authentication.dart';
 import 'package:flutter_app_2/utils/const.dart';
 import 'package:flutter_app_2/utils/preferencias_usuario.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+import 'login_page.dart';
 
 class ListaPacientesPage extends StatefulWidget {
  static final String routeName = 'lista_pacientes';
-
+final BaseAuth auth = new Auth();
   @override
   State createState() => ListaPacientesPageState();
 }
@@ -33,6 +37,14 @@ class ListaPacientesPageState extends State<ListaPacientesPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Lista de Pacientes'),
+        actions:  <Widget>[
+          IconButton(
+            icon: Icon(Icons.exit_to_app),
+            onPressed: () {
+              _cerrarSesion();
+            },
+          )
+        ],
       ),
       body: WillPopScope(
         child: Stack(
@@ -84,6 +96,20 @@ class ListaPacientesPageState extends State<ListaPacientesPage> {
         ,
       ),
     );
+  }
+
+  _cerrarSesion() async {
+    try {
+      await widget.auth.signOut();
+      prefs.id = '';
+      prefs.nombre = '';
+      prefs.pago = false;
+      Navigator.pushReplacementNamed(context, LoginPage.routeName);
+      Fluttertoast.showToast(msg: "Sesion terminada.");
+      print('Cerrando sesion');
+    } catch (e) {
+      print('error: $e');
+    }
   }
 
    Widget buildItem(BuildContext context, DocumentSnapshot document) {
