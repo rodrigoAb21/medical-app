@@ -3,12 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_2/pages/chat.dart';
-import 'package:flutter_app_2/pages/home_usuario.dart';
+import 'package:flutter_app_2/pages/chat_usuario.dart';
 import 'package:flutter_app_2/utils/const.dart';
 import 'package:flutter_app_2/utils/preferencias_usuario.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+
 
 class ListaMedicosPage extends StatefulWidget {
   static final String routeName = 'lista_medicos';
@@ -35,14 +34,6 @@ class ListaMedicosPageState extends State<ListaMedicosPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Medicos Disponibles'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.close),
-            onPressed: () {
-              _terminarConsulta();
-            },
-          )
-        ],
       ),
       body: WillPopScope(
         child: Stack(
@@ -154,7 +145,7 @@ class ListaMedicosPageState extends State<ListaMedicosPage> {
           onPressed: () {
             prefs.peerId = document.documentID;
             prefs.peerAvatar = document['photoUrl'];
-            Navigator.pushReplacementNamed(context, Chat.routeName);
+            Navigator.pushReplacementNamed(context, ChatUsuario.routeName);
           },
           color: greyColor2,
           padding: EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 10.0),
@@ -163,16 +154,6 @@ class ListaMedicosPageState extends State<ListaMedicosPage> {
         ),
         margin: EdgeInsets.only(bottom: 10.0, left: 5.0, right: 5.0),
       );
-    }
-  }
-
-  _terminarConsulta() async {
-    try {
-      prefs.pago = false;
-      Fluttertoast.showToast(msg: "Consulta finalizada.");
-      Navigator.pushReplacementNamed(context, HomeUsuarioPage.routeName);
-    } catch (e) {
-      print('error: $e');
     }
   }
 }

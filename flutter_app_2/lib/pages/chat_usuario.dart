@@ -13,12 +13,12 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
-class Chat extends StatelessWidget {
-  static final String routeName = 'chat';
+class ChatUsuario extends StatelessWidget {
+  static final String routeName = 'chat_usuario';
   final String peerId;
   final String peerAvatar;
 
-  Chat({Key key, @required this.peerId, @required this.peerAvatar})
+  ChatUsuario({Key key, @required this.peerId, @required this.peerAvatar})
       : super(key: key);
 
   @override
@@ -35,7 +35,7 @@ class Chat extends StatelessWidget {
           )
         ],
       ),
-      body: new ChatScreen(
+      body: new ChatUsuarioScreen(
         peerId: peerId,
         peerAvatar: peerAvatar,
       ),
@@ -61,20 +61,21 @@ _terminarConsulta(BuildContext context) async {
   }
 }
 
-class ChatScreen extends StatefulWidget {
+class ChatUsuarioScreen extends StatefulWidget {
   final String peerId;
   final String peerAvatar;
 
-  ChatScreen({Key key, @required this.peerId, @required this.peerAvatar})
+  ChatUsuarioScreen({Key key, @required this.peerId, @required this.peerAvatar})
       : super(key: key);
 
   @override
   State createState() =>
-      new ChatScreenState(peerId: peerId, peerAvatar: peerAvatar);
+      new ChatUsuarioScreenState(peerId: peerId, peerAvatar: peerAvatar);
 }
 
-class ChatScreenState extends State<ChatScreen> {
-  ChatScreenState({Key key, @required this.peerId, @required this.peerAvatar});
+class ChatUsuarioScreenState extends State<ChatUsuarioScreen> {
+  ChatUsuarioScreenState(
+      {Key key, @required this.peerId, @required this.peerAvatar});
 
   final prefs = new PreferenciasUsuario();
   String peerId;
@@ -82,7 +83,7 @@ class ChatScreenState extends State<ChatScreen> {
   String id;
 
   var listMessage;
-  String groupChatId;
+  String groupChatUsuarioId;
 
   File imageFile;
   bool isLoading;
@@ -99,7 +100,7 @@ class ChatScreenState extends State<ChatScreen> {
     super.initState();
     focusNode.addListener(onFocusChange);
 
-    groupChatId = '';
+    groupChatUsuarioId = '';
 
     isLoading = false;
     isShowSticker = false;
@@ -124,22 +125,15 @@ class ChatScreenState extends State<ChatScreen> {
     //id = prefs.getString('id') ?? '';
     id = prefs.id;
     if (id.hashCode <= peerId.hashCode) {
-      groupChatId = '$id-$peerId';
+      groupChatUsuarioId = '$id-$peerId';
     } else {
-      groupChatId = '$peerId-$id';
+      groupChatUsuarioId = '$peerId-$id';
     }
 
-    if (prefs.tipo == 'Medico') {
-      Firestore.instance
-          .collection('usuarios')
-          .document(id)
-          .updateData({'chattingWith': peerId});
-    } else {
-      Firestore.instance
-          .collection('usuarios')
-          .document(id)
-          .updateData({'chattingWith': peerId, 'doctor': peerId});
-    }
+    Firestore.instance
+        .collection('usuarios')
+        .document(id)
+        .updateData({'chattingWith': peerId, 'doctor': peerId});
 
     setState(() {});
   }
@@ -189,8 +183,8 @@ class ChatScreenState extends State<ChatScreen> {
 
       var documentReference = Firestore.instance
           .collection('messages')
-          .document(groupChatId)
-          .collection(groupChatId)
+          .document(groupChatUsuarioId)
+          .collection(groupChatUsuarioId)
           .document(DateTime.now().millisecondsSinceEpoch.toString());
 
       Firestore.instance.runTransaction((transaction) async {
@@ -463,25 +457,7 @@ class ChatScreenState extends State<ChatScreen> {
       setState(() {
         isShowSticker = false;
       });
-    } else {
-      if (prefs.tipo == 'Medico') {
-        Firestore.instance
-            .collection('usuarios')
-            .document(id)
-            .updateData({'chattingWith': null});
-        Navigator.pop(context);
-      } else {
-        Firestore.instance
-            .collection('usuarios')
-            .document(id)
-            .updateData({'chattingWith': null, 'doctor': null});
-
-        prefs.peerId = '';
-        prefs.peerAvatar = '';
-        Navigator.pushReplacementNamed(context, HomeUsuarioPage.routeName);
-      }
     }
-
     return Future.value(false);
   }
 
@@ -705,15 +681,15 @@ class ChatScreenState extends State<ChatScreen> {
 
   Widget buildListMessage() {
     return Flexible(
-      child: groupChatId == ''
+      child: groupChatUsuarioId == ''
           ? Center(
               child: CircularProgressIndicator(
                   valueColor: AlwaysStoppedAnimation<Color>(themeColor)))
           : StreamBuilder(
               stream: Firestore.instance
                   .collection('messages')
-                  .document(groupChatId)
-                  .collection(groupChatId)
+                  .document(groupChatUsuarioId)
+                  .collection(groupChatUsuarioId)
                   .orderBy('timestamp', descending: true)
                   .limit(20)
                   .snapshots(),

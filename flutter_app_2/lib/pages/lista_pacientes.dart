@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_2/pages/chat.dart';
+import 'package:flutter_app_2/pages/chat_medico.dart';
 import 'package:flutter_app_2/services/authentication.dart';
 import 'package:flutter_app_2/utils/const.dart';
 import 'package:flutter_app_2/utils/preferencias_usuario.dart';
@@ -171,7 +171,7 @@ class ListaPacientesPageState extends State<ListaPacientesPage> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => Chat(
+                    builder: (context) => ChatMedico(
                           peerId: document.documentID,
                           peerAvatar: document['photoUrl'],
                         )));

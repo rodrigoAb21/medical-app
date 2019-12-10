@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_2/pages/chat.dart';
+import 'package:flutter_app_2/pages/chat_usuario.dart';
 import 'package:flutter_app_2/pages/home_usuario.dart';
 import 'package:flutter_app_2/pages/lista_medicos.dart';
 import 'package:flutter_app_2/pages/lista_pacientes.dart';
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
         RegisterMedicoPage.routeName : ( BuildContext context ) => RegisterMedicoPage(),
         ListaMedicosPage.routeName : ( BuildContext context ) => ListaMedicosPage(),
         ListaPacientesPage.routeName: (BuildContext context ) => ListaPacientesPage(),
-        Chat.routeName: (BuildContext context ) => Chat(peerId: prefs.peerId, peerAvatar: prefs.peerAvatar),
+        ChatUsuario.routeName: (BuildContext context ) => ChatUsuario(peerId: prefs.peerId, peerAvatar: prefs.peerAvatar),
       },
     );
   }

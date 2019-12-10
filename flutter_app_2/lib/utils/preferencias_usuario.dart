@@ -33,7 +33,7 @@ class PreferenciasUsuario {
       } else {
         if (this.pago) {
           if (this.peerId != '') {
-            return 'chat';
+            return 'chat_usuario';
           } else {
             return 'lista_medicos';
           }
