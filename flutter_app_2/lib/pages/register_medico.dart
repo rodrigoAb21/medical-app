@@ -244,6 +244,7 @@ class _RegisterMedicoPageState extends State<RegisterMedicoPage> {
         'telefono': _telefono,
         'tipo': 'Medico',
         'chattingWith' : null,
+        'online' : true,
         'photoUrl' : 'https://agendavirtual.vpsnotas.com/Content/Images/default-user.png',
       };
       await Firestore.instance
