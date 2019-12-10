@@ -101,6 +101,7 @@ class ListaPacientesPageState extends State<ListaPacientesPage> {
   _cerrarSesion() async {
     try {
       await widget.auth.signOut();
+      await Firestore.instance.collection('usuarios').document(prefs.id).updateData({'online': false});
       prefs.id = '';
       prefs.nombre = '';
       prefs.pago = false;

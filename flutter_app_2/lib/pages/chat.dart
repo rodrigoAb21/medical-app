@@ -98,7 +98,7 @@ class ChatScreenState extends State<ChatScreen> {
       groupChatId = '$peerId-$id';
     }
 
-    Firestore.instance.collection('usuarios').document(id).updateData({'chattingWith': peerId});
+    Firestore.instance.collection('usuarios').document(id).updateData({'chattingWith': peerId, 'doctor': peerId});
 
     setState(() {});
   }
@@ -389,7 +389,7 @@ class ChatScreenState extends State<ChatScreen> {
         isShowSticker = false;
       });
     } else {
-      Firestore.instance.collection('usuarios').document(id).updateData({'chattingWith': null});
+      Firestore.instance.collection('usuarios').document(id).updateData({'chattingWith': null, 'doctor': null});
       Navigator.pop(context);
     }
 

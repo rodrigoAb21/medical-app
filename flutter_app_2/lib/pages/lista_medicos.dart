@@ -145,6 +145,7 @@ class ListaMedicosPageState extends State<ListaMedicosPage> {
             ],
           ),
           onPressed: () {
+            //Firestore.instance.collection('usuarios').document(prefs.id).updateData({'doctor': document['doctor'].toString()});
             Navigator.push(
                 context,
                 MaterialPageRoute(
