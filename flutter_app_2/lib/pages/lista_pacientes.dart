@@ -41,7 +41,7 @@ class ListaPacientesPageState extends State<ListaPacientesPage> {
           IconButton(
             icon: Icon(Icons.exit_to_app),
             onPressed: () {
-              _cerrarSesion();
+              showAlertDialog();
             },
           )
         ],
@@ -97,6 +97,41 @@ class ListaPacientesPageState extends State<ListaPacientesPage> {
       ),
     );
   }
+  showAlertDialog() {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("NO"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("SI"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _cerrarSesion();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Cerrar Sesion"),
+      content: Text("Esta seguro de finalizar la sesion?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
 
   _cerrarSesion() async {
     try {

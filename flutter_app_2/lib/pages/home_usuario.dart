@@ -29,7 +29,7 @@ class _HomeUsuarioPageState extends State<HomeUsuarioPage> {
           IconButton(
             icon: Icon(Icons.exit_to_app),
             onPressed: () {
-              _cerrarSesion();
+              showAlertDialog();
             },
           )
         ],
@@ -43,6 +43,41 @@ class _HomeUsuarioPageState extends State<HomeUsuarioPage> {
           ],
         ),
       ),
+    );
+  }
+
+  showAlertDialog() {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("NO"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("SI"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _cerrarSesion();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Cerrar Sesion"),
+      content: Text("Esta seguro de finalizar la sesion?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 
@@ -94,21 +129,17 @@ class _HomeUsuarioPageState extends State<HomeUsuarioPage> {
     );
   }
 
-  void _cardEntryCancel() {
-    
-  }
+  void _cardEntryCancel() {}
 
   void _cardNonceRequestSuccess(CardDetails result) {
-    
     InAppPayments.completeCardEntry(
       onCardEntryComplete: _cardEntryComplete,
     );
   }
 
   void _cardEntryComplete() {
-    
     prefs.pago = true;
-    Navigator.pushReplacementNamed(context,ListaMedicosPage.routeName);
+    Navigator.pushReplacementNamed(context, ListaMedicosPage.routeName);
   }
 
   _cerrarSesion() async {
@@ -126,14 +157,12 @@ class _HomeUsuarioPageState extends State<HomeUsuarioPage> {
   }
 
   _irConsultaMedica() {
-    
     _pay();
   }
 
   _irDiagnosticoInteligente() {
     _handleURLButtonPress(context, 'https://symptomate.com/chatbot/');
   }
-
 
   void _handleURLButtonPress(BuildContext context, String url) {
     Navigator.push(context,

@@ -31,7 +31,7 @@ class ChatUsuario extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.close),
             onPressed: () {
-              _terminarConsulta(context);
+              showAlertDialog(context);
             },
           )
         ],
@@ -40,6 +40,41 @@ class ChatUsuario extends StatelessWidget {
         peerId: peerId,
         peerAvatar: peerAvatar,
       ),
+    );
+  }
+
+  showAlertDialog(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("NO"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("SI"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _terminarConsulta(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Finalizar Consulta"),
+      content: Text("Esta seguro de finalizar la consulta?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 
