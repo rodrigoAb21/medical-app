@@ -95,18 +95,18 @@ class _HomeUsuarioPageState extends State<HomeUsuarioPage> {
   }
 
   void _cardEntryCancel() {
-    print('!!!!!!!!!!!!!!!!!!!!!!!!!!_cardEntryCancel!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    
   }
 
   void _cardNonceRequestSuccess(CardDetails result) {
-    print('!!!!!!!!!!!!!!!!!!!!!!!!!!_cardNonceRequestSuccess!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    
     InAppPayments.completeCardEntry(
       onCardEntryComplete: _cardEntryComplete,
     );
   }
 
   void _cardEntryComplete() {
-    print('!!!!!!!!!!!!!!!!!!!!!!!!!!_cardEntryComplete!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    
     prefs.pago = true;
     Navigator.pushReplacementNamed(context,ListaMedicosPage.routeName);
   }
@@ -126,7 +126,7 @@ class _HomeUsuarioPageState extends State<HomeUsuarioPage> {
   }
 
   _irConsultaMedica() {
-    print("CONSULTA MEDICA");
+    
     _pay();
   }
 

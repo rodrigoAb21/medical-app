@@ -17,6 +17,7 @@ class ChatUsuario extends StatelessWidget {
   static final String routeName = 'chat_usuario';
   final String peerId;
   final String peerAvatar;
+  final prefs2 = new PreferenciasUsuario();
 
   ChatUsuario({Key key, @required this.peerId, @required this.peerAvatar})
       : super(key: key);
@@ -41,23 +42,38 @@ class ChatUsuario extends StatelessWidget {
       ),
     );
   }
-}
 
-_terminarConsulta(BuildContext context) async {
-  try {
-    final prefs2 = new PreferenciasUsuario();
-    prefs2.pago = false;
-    Firestore.instance
-        .collection('usuarios')
-        .document(prefs2.id)
-        .updateData({'chattingWith': null, 'doctor': null});
+  _terminarConsulta(BuildContext context) async {
+    try {
+      String chat = (prefs2.id.hashCode <= prefs2.peerId.hashCode)
+          ? '${prefs2.id}-${prefs2.peerId}'
+          : '${prefs2.peerId}-${prefs2.id}';
 
-    prefs2.peerId = '';
-    prefs2.peerAvatar = '';
-    Fluttertoast.showToast(msg: "Consulta finalizada.");
-    Navigator.pushReplacementNamed(context, HomeUsuarioPage.routeName);
-  } catch (e) {
-    print('error: $e');
+      Firestore.instance
+          .collection('messages')
+          .document(chat)
+          .collection(chat)
+          .getDocuments()
+          .then((snapshot) {
+        for (DocumentSnapshot ds in snapshot.documents) {
+          ds.reference.delete();
+        }
+      });
+
+      prefs2.pago = false;
+      Firestore.instance
+          .collection('usuarios')
+          .document(prefs2.id)
+          .updateData({'chattingWith': null, 'doctor': null});
+
+      prefs2.peerId = '';
+      prefs2.peerAvatar = '';
+      Fluttertoast.showToast(msg: "Consulta finalizada.");
+
+      Navigator.pushReplacementNamed(context, HomeUsuarioPage.routeName);
+    } catch (e) {
+      print('error: $e');
+    }
   }
 }
 
