@@ -421,7 +421,7 @@ class _ChatbotState extends State<Chatbot> {
                   text: TextSpan(
                     text: '$pregunta',
                     style: TextStyle(
-                        fontSize: 20.0,
+                        fontSize: 18.0,
                         color: Colors.black,
                         fontWeight: FontWeight.bold),
                   ),
@@ -551,7 +551,7 @@ class _ChatbotState extends State<Chatbot> {
                   style: TextStyle(color: Colors.black, fontSize: 18.0),
                   textAlign: TextAlign.center,
                 ),
-                subtitle: Text('$p%',
+                subtitle: Text('${p.toStringAsFixed(2)}%',
                     style: TextStyle(fontSize: 17.0),
                     textAlign: TextAlign.center),
                 onTap: () {},
