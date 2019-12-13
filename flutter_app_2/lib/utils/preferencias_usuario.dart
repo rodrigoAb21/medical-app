@@ -61,6 +61,24 @@ class PreferenciasUsuario {
     _prefs.setString('nombre', value);
   }
 
+   get edad {
+    return _prefs.getInt('edad') ?? 0;
+  }
+
+  set edad(int value) {
+    _prefs.setInt('edad', value);
+  }
+
+
+  get sexo {
+    return _prefs.getString('sexo') ?? '';
+  }
+
+  set sexo(String value) {
+    _prefs.setString('sexo', value);
+  }
+
+
   get pago {
     return _prefs.getBool('pago') ?? false;
   }

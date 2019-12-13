@@ -225,11 +225,11 @@ void registerNotification() {
   }
 
   _irDiagnosticoInteligente() {
-    _handleURLButtonPress(context, 'https://symptomate.com/chatbot/');
+    _handleURLButtonPress(context);
   }
 
-  void _handleURLButtonPress(BuildContext context, String url) {
+  void _handleURLButtonPress(BuildContext context) {
     Navigator.push(context,
-        MaterialPageRoute(builder: (context) => WebViewContainer(url)));
+        MaterialPageRoute(builder: (context) => Chatbot()));
   }
 }

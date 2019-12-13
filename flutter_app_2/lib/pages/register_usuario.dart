@@ -304,6 +304,8 @@ class _RegisterUsuarioPageState extends State<RegisterUsuarioPage> {
       final prefs = new PreferenciasUsuario();
       prefs.id = userId;
       prefs.tipo = 'Usuario';
+      prefs.sexo = _sexo == 0 ? 'male' : 'female';
+      prefs.edad = int.parse(_edad);
       this.setState(() {
         isLoading = false;
       });
