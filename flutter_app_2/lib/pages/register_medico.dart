@@ -243,6 +243,8 @@ class _RegisterMedicoPageState extends State<RegisterMedicoPage> {
         'matricula': _matricula,
         'telefono': _telefono,
         'tipo': 'Medico',
+        'sexo': 'Masculino',
+        'edad': '26',
         'chattingWith' : null,
         'online' : true,
         'photoUrl' : 'https://agendavirtual.vpsnotas.com/Content/Images/default-user.png',
