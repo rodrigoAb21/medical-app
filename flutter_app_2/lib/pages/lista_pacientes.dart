@@ -30,7 +30,6 @@ class ListaPacientesPageState extends State<ListaPacientesPage> {
 
   @override
   Widget build(BuildContext context) {
-    print('lista consultas::::::::::::::'+Firestore.instance.collection('consultas').document(prefs.id).get(source: 'pacientes').toString());
     
     return Scaffold(
       appBar: AppBar(
