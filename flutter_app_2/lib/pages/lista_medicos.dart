@@ -3,15 +3,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_2/pages/chat.dart';
-import 'package:flutter_app_2/pages/home_usuario.dart';
+import 'package:flutter_app_2/pages/chat_usuario.dart';
 import 'package:flutter_app_2/utils/const.dart';
 import 'package:flutter_app_2/utils/preferencias_usuario.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+
 
 class ListaMedicosPage extends StatefulWidget {
- static final String routeName = 'lista_medicos';
+  static final String routeName = 'lista_medicos';
 
   @override
   State createState() => ListaMedicosPageState();
@@ -20,7 +19,8 @@ class ListaMedicosPage extends StatefulWidget {
 class ListaMedicosPageState extends State<ListaMedicosPage> {
   final prefs = new PreferenciasUsuario();
   final FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      new FlutterLocalNotificationsPlugin();
 
   bool isLoading = false;
 
@@ -34,14 +34,6 @@ class ListaMedicosPageState extends State<ListaMedicosPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Medicos Disponibles'),
-         actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.close),
-            onPressed: () {
-              _terminarConsulta();
-            },
-          )
-        ],
       ),
       body: WillPopScope(
         child: Stack(
@@ -49,7 +41,11 @@ class ListaMedicosPageState extends State<ListaMedicosPage> {
             // List
             Container(
               child: StreamBuilder(
-                stream: Firestore.instance.collection('usuarios').where('online',isEqualTo: true).where('tipo', isEqualTo: 'Medico').snapshots(),
+                stream: Firestore.instance
+                    .collection('usuarios')
+                    .where('online', isEqualTo: true)
+                    .where('tipo', isEqualTo: 'Medico')
+                    .snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
                     return Center(
@@ -60,7 +56,8 @@ class ListaMedicosPageState extends State<ListaMedicosPage> {
                   } else {
                     return ListView.builder(
                       padding: EdgeInsets.all(10.0),
-                      itemBuilder: (context, index) => buildItem(context, snapshot.data.documents[index]),
+                      itemBuilder: (context, index) =>
+                          buildItem(context, snapshot.data.documents[index]),
                       itemCount: snapshot.data.documents.length,
                     );
                   }
@@ -73,7 +70,9 @@ class ListaMedicosPageState extends State<ListaMedicosPage> {
               child: isLoading
                   ? Container(
                       child: Center(
-                        child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(themeColor)),
+                        child: CircularProgressIndicator(
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(themeColor)),
                       ),
                       color: Colors.white.withOpacity(0.8),
                     )
@@ -81,18 +80,16 @@ class ListaMedicosPageState extends State<ListaMedicosPage> {
             )
           ],
         ),
-        onWillPop:(){
+        onWillPop: () {
           return null;
-        } 
+        }
         //onBackPress
         ,
       ),
     );
   }
 
-  
-
-   Widget buildItem(BuildContext context, DocumentSnapshot document) {
+  Widget buildItem(BuildContext context, DocumentSnapshot document) {
     if (document['id'] == prefs.id) {
       return Container();
     } else {
@@ -106,7 +103,8 @@ class ListaMedicosPageState extends State<ListaMedicosPage> {
                         placeholder: (context, url) => Container(
                           child: CircularProgressIndicator(
                             strokeWidth: 1.0,
-                            valueColor: AlwaysStoppedAnimation<Color>(themeColor),
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(themeColor),
                           ),
                           width: 50.0,
                           height: 50.0,
@@ -145,38 +143,17 @@ class ListaMedicosPageState extends State<ListaMedicosPage> {
             ],
           ),
           onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => Chat(
-                          peerId: document.documentID,
-                          peerAvatar: document['photoUrl'],
-                        )));
+            prefs.peerId = document.documentID;
+            prefs.peerAvatar = document['photoUrl'];
+            Navigator.pushReplacementNamed(context, ChatUsuario.routeName);
           },
           color: greyColor2,
           padding: EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 10.0),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
         ),
         margin: EdgeInsets.only(bottom: 10.0, left: 5.0, right: 5.0),
       );
     }
   }
-
-
- _terminarConsulta() async {
-    try {
-      prefs.pago = false;
-      Fluttertoast.showToast(msg: "Consulta finalizada.");
-      Navigator.pushReplacementNamed(context, HomeUsuarioPage.routeName);
-    } catch (e) {
-      print('error: $e');
-    }
-  }
-
-
 }
-
-
-
-
- 

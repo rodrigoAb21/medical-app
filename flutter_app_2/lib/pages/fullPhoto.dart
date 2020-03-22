@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_2/utils/const.dart';
 import 'package:photo_view/photo_view.dart';
 
 class FullPhoto extends StatelessWidget {
@@ -10,13 +9,7 @@ class FullPhoto extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text(
-          'FULL PHOTO',
-          style: TextStyle(color: primaryColor, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-      ),
+      appBar: new AppBar(),
       body: new FullPhotoScreen(url: url),
     );
   }

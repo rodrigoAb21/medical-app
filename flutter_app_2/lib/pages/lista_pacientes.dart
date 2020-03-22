@@ -1,16 +1,23 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_2/pages/chat.dart';
+import 'package:flutter_app_2/pages/chat_medico.dart';
+import 'package:flutter_app_2/services/authentication.dart';
 import 'package:flutter_app_2/utils/const.dart';
 import 'package:flutter_app_2/utils/preferencias_usuario.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+import 'login_page.dart';
 
 class ListaPacientesPage extends StatefulWidget {
  static final String routeName = 'lista_pacientes';
-
+final BaseAuth auth = new Auth();
   @override
   State createState() => ListaPacientesPageState();
 }
@@ -23,10 +30,61 @@ class ListaPacientesPageState extends State<ListaPacientesPage> {
 
   bool isLoading = false;
 
-  @override
+ @override
   void initState() {
     super.initState();
+    registerNotification();
+    configLocalNotification();
   }
+
+void registerNotification() {
+    firebaseMessaging.requestNotificationPermissions();
+
+    firebaseMessaging.configure(onMessage: (Map<String, dynamic> message) {
+      print('onMessage: $message');
+      showNotification(message['notification']);
+      return;
+    }, onResume: (Map<String, dynamic> message) {
+      print('onResume: $message');
+      return;
+    }, onLaunch: (Map<String, dynamic> message) {
+      print('onLaunch: $message');
+      return;
+    });
+
+    firebaseMessaging.getToken().then((token) {
+      print('token: $token');
+      Firestore.instance.collection('usuarios').document(prefs.id).updateData({'pushToken': token});
+    }).catchError((err) {
+      Fluttertoast.showToast(msg: err.message.toString());
+    });
+  }
+
+    void showNotification(message) async {
+    var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
+      Platform.isAndroid ? 'sw.uagrm.flutter_app_2': 'sw.uagrm.flutter_app_2',
+      'Medical App',
+      '--',
+      playSound: true,
+      enableVibration: true,
+      importance: Importance.Max,
+      priority: Priority.High,
+    );
+    var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
+    var platformChannelSpecifics =
+        new NotificationDetails(androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+        0, message['title'].toString(), message['body'].toString(), platformChannelSpecifics,
+        payload: json.encode(message));
+  }
+
+  void configLocalNotification() {
+    var initializationSettingsAndroid = new AndroidInitializationSettings('app_icon');
+    var initializationSettingsIOS = new IOSInitializationSettings();
+    var initializationSettings = new InitializationSettings(initializationSettingsAndroid, initializationSettingsIOS);
+    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +92,14 @@ class ListaPacientesPageState extends State<ListaPacientesPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Lista de Pacientes'),
+        actions:  <Widget>[
+          IconButton(
+            icon: Icon(Icons.exit_to_app),
+            onPressed: () {
+              showAlertDialog();
+            },
+          )
+        ],
       ),
       body: WillPopScope(
         child: Stack(
@@ -44,7 +110,8 @@ class ListaPacientesPageState extends State<ListaPacientesPage> {
 
                 stream: 
                 
-                Firestore.instance.collection('usuarios').where('tipo', isEqualTo: 'Usuario').snapshots()
+                Firestore.instance.collection('usuarios').where('doctor', isEqualTo: prefs.id).snapshots()
+                 //no cambie nada :'v
                 ,
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
@@ -85,9 +152,61 @@ class ListaPacientesPageState extends State<ListaPacientesPage> {
       ),
     );
   }
+  showAlertDialog() {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("NO"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("SI"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _cerrarSesion();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Cerrar Sesion"),
+      content: Text("Esta seguro de finalizar la sesion?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+
+  _cerrarSesion() async {
+    try {
+      await widget.auth.signOut();
+      await Firestore.instance.collection('usuarios').document(prefs.id).updateData({'online': false});
+      prefs.id = '';
+      prefs.nombre = '';
+      prefs.pago = false;
+      Navigator.pushReplacementNamed(context, LoginPage.routeName);
+      Fluttertoast.showToast(msg: "Sesion terminada.");
+      print('Cerrando sesion');
+    } catch (e) {
+      print('error: $e');
+    }
+  }
 
    Widget buildItem(BuildContext context, DocumentSnapshot document) {
-    if (document['id'] == prefs.id) {
+    if (
+      document['id'] == prefs.id
+      ) {
       return Container();
     } else {
       return Container(
@@ -142,7 +261,7 @@ class ListaPacientesPageState extends State<ListaPacientesPage> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => Chat(
+                    builder: (context) => ChatMedico(
                           peerId: document.documentID,
                           peerAvatar: document['photoUrl'],
                         )));

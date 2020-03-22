@@ -16,6 +16,7 @@
 #import <shared_preferences/SharedPreferencesPlugin.h>
 #import <sqflite/SqflitePlugin.h>
 #import <square_in_app_payments/SquareInAppPaymentsFlutterPlugin.h>
+#import <webview_flutter/WebViewFlutterPlugin.h>
 
 @implementation GeneratedPluginRegistrant
 
@@ -33,6 +34,7 @@
   [FLTSharedPreferencesPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTSharedPreferencesPlugin"]];
   [SqflitePlugin registerWithRegistrar:[registry registrarForPlugin:@"SqflitePlugin"]];
   [SquareInAppPaymentsFlutterPlugin registerWithRegistrar:[registry registrarForPlugin:@"SquareInAppPaymentsFlutterPlugin"]];
+  [FLTWebViewFlutterPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTWebViewFlutterPlugin"]];
 }
 
 @end

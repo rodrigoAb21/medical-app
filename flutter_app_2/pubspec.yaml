@@ -32,10 +32,12 @@ dependencies:
   firebase_storage: ^3.0.6
   cached_network_image: ^1.1.1
   intl: ^0.15.7
+  http:
   firebase_messaging: ^5.1.6
   flutter_local_notifications: ^0.8.4
   photo_view: ^0.5.0
   square_in_app_payments: ^1.2.3
+  webview_flutter: ^0.3.3
 
 dev_dependencies:
   flutter_test:

@@ -285,6 +285,7 @@ class _RegisterUsuarioPageState extends State<RegisterUsuarioPage> {
         'edad': _edad,
         'telefono': _telefono,
         'chattingWith' : null,
+        'doctor': null,
         'photoUrl' : 'https://agendavirtual.vpsnotas.com/Content/Images/default-user.png',
         'tipo': 'Usuario',
         'sexo': _sexo == 0 ? 'Masculino' : 'Femenino',
@@ -303,6 +304,8 @@ class _RegisterUsuarioPageState extends State<RegisterUsuarioPage> {
       final prefs = new PreferenciasUsuario();
       prefs.id = userId;
       prefs.tipo = 'Usuario';
+      prefs.sexo = _sexo == 0 ? 'male' : 'female';
+      prefs.edad = int.parse(_edad);
       this.setState(() {
         isLoading = false;
       });

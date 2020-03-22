@@ -29,10 +29,14 @@ class PreferenciasUsuario {
   String getPagina() {
     if (this.id != null && this.id != '' && this.tipo != '') {
       if (this.tipo == 'Medico') {
-        return 'home_medico';
+        return 'lista_pacientes';
       } else {
         if (this.pago) {
-          return 'lista_medicos';
+          if (this.peerId != '') {
+            return 'chat_usuario';
+          } else {
+            return 'lista_medicos';
+          }
         } else {
           return 'home_usuario';
         }
@@ -57,6 +61,24 @@ class PreferenciasUsuario {
     _prefs.setString('nombre', value);
   }
 
+   get edad {
+    return _prefs.getInt('edad') ?? 0;
+  }
+
+  set edad(int value) {
+    _prefs.setInt('edad', value);
+  }
+
+
+  get sexo {
+    return _prefs.getString('sexo') ?? '';
+  }
+
+  set sexo(String value) {
+    _prefs.setString('sexo', value);
+  }
+
+
   get pago {
     return _prefs.getBool('pago') ?? false;
   }
@@ -72,4 +94,22 @@ class PreferenciasUsuario {
   set tipo(String value) {
     _prefs.setString('tipo', value);
   }
+
+ get peerId {
+    return _prefs.getString('peerId') ?? '';
+  }
+
+  set peerId(String value) {
+    _prefs.setString('peerId', value);
+  }
+
+  get peerAvatar {
+    return _prefs.getString('peerAvatar') ?? '';
+  }
+
+  set peerAvatar(String value) {
+    _prefs.setString('peerAvatar', value);
+  }
+
+
 }

@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_app_2/pages/home_usuario.dart';
 import 'package:flutter_app_2/pages/lista_pacientes.dart';
 import 'package:flutter_app_2/pages/register_medico.dart';
@@ -207,15 +206,19 @@ class _LoginPageState extends State<LoginPage> {
           .document(userId)
           .get()
           .then((DocumentSnapshot ds) {
+        prefs.edad = int.parse(ds['edad']);
+        prefs.sexo = ds['sexo'] == 'Masculino' ? 'male' : 'female';
         return ds['tipo'];
       });
-      
+
+      print('!!!!!!!!! SEXO --->${prefs.sexo} Y EDAD ----> ${prefs.edad} !!!!!!!!!!!!!!!!');
+
       prefs.tipo = tipo;
 
       if (tipo != null) {
         this.setState(() {
-        isLoading = false;
-      });
+          isLoading = false;
+        });
         if (tipo == 'Usuario') {
           Navigator.pushAndRemoveUntil(
             context,
@@ -223,7 +226,10 @@ class _LoginPageState extends State<LoginPage> {
             (Route<dynamic> route) => false,
           );
         } else {
-          await Firestore.instance.collection('usuarios').document(userId).updateData({'online': true});
+          await Firestore.instance
+              .collection('usuarios')
+              .document(userId)
+              .updateData({'online': true});
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => ListaPacientesPage()),
