@@ -13,6 +13,7 @@ import 'package:flutter_app_2/utils/preferencias_usuario.dart';
 
 
 void main() async {
+   WidgetsFlutterBinding.ensureInitialized();
   final prefs = new PreferenciasUsuario();
   await prefs.initPrefs();
   runApp(MyApp());
